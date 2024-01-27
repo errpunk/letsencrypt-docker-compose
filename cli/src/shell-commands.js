@@ -1,5 +1,6 @@
 import { promisify } from 'util';
 import { exec } from 'child_process';
+import { NdJson } from 'json-nd';
 
 const execute = promisify(exec);
 
@@ -20,7 +21,7 @@ const runCommand = async (command, logOutput = true) => {
 
 export const isNginxServiceRunning = async () => {
   const { stdout } = await runCommand('docker compose ps --format json', false);
-  const containers = JSON.parse(stdout);
+  const containers = NdJson.parse(stdout);
   return !!containers.find(
     (container) =>
       container.Service === 'nginx' && container.State === 'running'
